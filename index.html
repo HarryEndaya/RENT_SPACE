@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="google-site-verification" content="t0iSiD4jCyOgDP7uzyFOvw640N0R1D1QQt_D4ZhOrTw" />
+  <title>RentSpace: Room and Apartment Finder | Irosin, Sorsogon</title>
+  
+  <!-- Font Awesome Icons & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- MOBILE NAVIGATION OVERLAY BACKDROP -->
+  <div class="nav-overlay" id="navOverlay" onclick="closeMobileMenu()"></div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div class="location-badge">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>Focus Area: <strong>Irosin, Sorsogon</strong></span>
+      </div>
+      <div class="project-tag">
+        <i class="fa-solid fa-shield-halved"></i> Verified Rental Platform
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="navbar-header">
+    <div class="container navbar-container">
+      <a href="#" class="brand-logo" onclick="showMainView()">
+        <div class="logo-icon"><i class="fa-solid fa-house-signal"></i></div>
+        <div class="logo-text">Rent<span>Space</span></div>
+      </a>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Toggle Navigation">
+        <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
+      </button>
+
+      <!-- Navigation Menu Drawer & Actions -->
+      <div class="nav-menu-wrapper" id="navMenu">
+        <div class="nav-drawer-header">
+          <div class="nav-drawer-title"><i class="fa-solid fa-bars"></i> Navigation Menu</div>
+          <button class="btn btn-outline btn-sm" onclick="toggleMobileMenu()">
+            <i class="fa-solid fa-arrow-left"></i> Back
+          </button>
+        </div>
+        <nav class="nav-menu">
+          <a href="#" class="nav-link" onclick="openFeatureForm('search')"><i class="fa-solid fa-magnifying-glass-location"></i> Search & Filter</a>
+          <a href="#" class="nav-link" onclick="openFeatureForm('listings')"><i class="fa-solid fa-building-user"></i> Property Listings</a>
+          <a href="#" class="nav-link" onclick="openFeatureForm('favorites')"><i class="fa-solid fa-heart"></i> Favorites</a>
+          <a href="#" class="nav-link" onclick="openFeatureForm('appointment')"><i class="fa-solid fa-calendar-days"></i> Viewing Appointment</a>
+          <a href="#" class="nav-link" onclick="openFeatureForm('status')"><i class="fa-solid fa-toggle-on"></i> Status Tracking</a>
+          <a href="#" class="nav-link" onclick="openFeatureForm('user_dashboard')"><i class="fa-solid fa-user-gear"></i> User Portal</a>
+          <a href="#" class="nav-link" onclick="openFeatureForm('admin')"><i class="fa-solid fa-user-shield"></i> Admin Dashboard</a>
+          <a href="#" class="nav-link" onclick="openFeatureForm('about')"><i class="fa-solid fa-circle-info"></i> About Us</a>
+          <a href="#" class="nav-link" onclick="openFeatureForm('contact')"><i class="fa-solid fa-headset"></i> Contact Us & User Guide</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn btn-outline" onclick="openCompareModal()">
+            <i class="fa-solid fa-code-compare"></i> Compare (<span id="compareCount">0</span>)
+          </button>
+          <div id="navAuthButtons" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <button class="btn btn-primary" onclick="openAuthModal('user_login')">
+              <i class="fa-solid fa-right-to-bracket"></i> User Login / Register
+            </button>
+            <button class="btn btn-secondary" onclick="openAuthModal('admin')">
+              <i class="fa-solid fa-user-lock"></i> Admin Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER / VIEW SWITCHER -->
+  <main id="mainViewContainer">
+
+    <!-- HERO SECTION & SEARCH -->
+    <section class="hero-section" id="home">
+      <div class="container hero-container-single">
+        <div class="hero-text">
+          <span class="badge-pill"><i class="fa-solid fa-sparkles"></i> Room & Apartment Finder</span>
+          <h1>Find Your Next Room or Apartment in <span>Irosin, Sorsogon</span></h1>
+          <p>
+            RentSpace provides instant discovery of verified rooms, boarding houses, and apartments across all 28 barangays of Irosin.
+          </p>
+
+          <!-- Dynamic Search Form -->
+          <div class="hero-search-card">
+            <div class="search-inputs-grid">
+              <div class="input-group">
+                <label><i class="fa-solid fa-map-pin"></i> Barangay / Location</label>
+                <select id="filterBarangay">
+                  <option value="all">All Barangays</option>
+                  <option value="San Pedro">San Pedro</option>
+                  <option value="Bacolod">Bacolod</option>
+                  <option value="San Juan">San Juan</option>
+                  <option value="Monbon">Monbon</option>
+                  <option value="Mapaso">Mapaso</option>
+                  <option value="Buenavista">Buenavista</option>
+                  <option value="Central">Poblacion / Town Center</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label><i class="fa-solid fa-bed"></i> Property Type</label>
+                <select id="filterType">
+                  <option value="all">All Types</option>
+                  <option value="Room">Private Room</option>
+                  <option value="Apartment">Apartment</option>
+                  <option value="Transient">Transient / Lodge</option>
+                  <option value="Boarding House">Boarding House</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label><i class="fa-solid fa-tag"></i> Max Monthly Budget (₱)</label>
+                <select id="filterPrice">
+                  <option value="all">Any Price Range</option>
+                  <option value="1500">Under ₱1,500</option>
+                  <option value="3000">Under ₱3,000</option>
+                  <option value="6000">Under ₱6,000</option>
+                  <option value="10000">Under ₱10,000</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label><i class="fa-solid fa-wifi"></i> Key Amenity</label>
+                <select id="filterAmenity">
+                  <option value="all">Any Facility</option>
+                  <option value="WiFi">Wi-Fi Internet</option>
+                  <option value="Aircon">Air Conditioning</option>
+                  <option value="Parking">Parking Space</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="search-action-row">
+              <button class="btn btn-primary btn-block" onclick="applySearchFilter()">
+                <i class="fa-solid fa-magnifying-glass"></i> Search Available Stays
+              </button>
+              <button class="btn btn-secondary" onclick="resetFilters()">
+                <i class="fa-solid fa-rotate-right"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE MAP & BARANGAY DIRECTORY SECTION -->
+    <section class="section-padding bg-light" id="map-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="sub-title"><i class="fa-solid fa-map"></i> Geographical Coverage</span>
+          <h2>Irosin Sorsogon Interactive Map</h2>
+          <p>Explore available rental locations using the embedded interactive map below[cite: 1].</p>
+        </div>
+
+        <div class="map-wrapper-grid">
+          <!-- GOOGLE MY MAPS EMBED CONTAINER -->
+          <div class="google-map-embed-container">
+            <div class="iframe-wrapper">
+              <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1X575n3elev7x_U-8pdDams2OJtOBibo&ehbc=2E312F&noprof=1" title="Irosin Map" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+          </div>
+
+          <!-- BARANGAY EXPLORER SIDEBAR -->
+          <div class="barangay-sidebar">
+            <div class="barangay-sidebar-header">
+              <h3><i class="fa-solid fa-list-ol"></i> Barangays of Irosin</h3>
+              <input type="text" id="barangaySearchInput" placeholder="Filter barangay..." onkeyup="filterBarangayList()"/>
+            </div>
+            <ul class="barangay-list" id="barangayList">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROPERTY LISTINGS SECTION -->
+    <section class="section-padding" id="listings">
+      <div class="container">
+        <div class="section-header-flex">
+          <div>
+            <span class="sub-title"><i class="fa-solid fa-building"></i> Accommodation Directory</span>
+            <h2>Available Rooms & Apartments for Rent</h2>
+          </div>
+          <div class="listing-view-toggle">
+            <span id="resultsCount" class="results-badge">Showing Available Properties</span>
+          </div>
+        </div>
+
+        <div class="listings-grid" id="listingsGrid">
+          <!-- Dynamic cards generated by script.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DYNAMIC INDIVIDUAL FEATURE FORM VIEW -->
+  <div id="featureFormContainer" class="feature-form-container" style="display: none;">
+    <div class="container">
+      <button class="btn btn-outline back-home-btn" onclick="showMainView()">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+      </button>
+      <div id="dynamicFeatureContent">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="logo-text light">Rent<span>Space</span></div>
+        <p>Room and Apartment Finder System tailored for Irosin, Sorsogon.</p>
+      </div>
+      <div class="footer-contact">
+        <h4>Coverage Area</h4>
+        <p><i class="fa-solid fa-location-dot"></i> Municipality of Irosin, Sorsogon Province, Bicol Region, Philippines</p>
+      </div>
+    </div>
+    <div class="footer-bottom text-center">
+      <p>&copy; 2026 RentSpace: Room and Apartment Finder. Designed for Irosin, Sorsogon.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL: PROPERTY DETAILS -->
+  <div class="modal" id="detailsModal">
+    <div class="modal-content modal-lg">
+      <button class="modal-close" onclick="closeModal('detailsModal')">&times;</button>
+      <div class="modal-body" id="modalDetailsBody"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: VIEWING APPOINTMENT -->
+  <div class="modal" id="appointmentModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('appointmentModal')">&times;</button>
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-calendar-plus"></i> Schedule Property Viewing</h3>
+        <p id="appointPropertyName">Property Name</p>
+      </div>
+      <form id="appointmentForm" onsubmit="handleAppointmentSubmit(event)">
+        <div class="form-group">
+          <label>Your Full Name</label>
+          <input type="text" id="appointName" required placeholder="e.g. Mary Grace Lacsa" class="form-control" oninput="validateInputLetters(this, 'Full Name')"/>
+        </div>
+        <div class="form-group">
+          <label>Contact Number (11 digits)</label>
+          <input type="text" id="appointContact" required placeholder="09171234567" maxlength="11" class="form-control" oninput="validateInputDigits(this, 'Contact Number')"/>
+        </div>
+        <div class="form-group">
+          <label>Preferred Date</label>
+          <input type="date" id="appointDate" required class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label>Preferred Time</label>
+          <input type="time" id="appointTime" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Confirm Viewing Request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: PROPERTY COMPARISON -->
+  <div class="modal" id="compareModal">
+    <div class="modal-content modal-xl">
+      <button class="modal-close" onclick="closeModal('compareModal')">&times;</button>
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-code-compare"></i> Compare Properties</h3>
+      </div>
+      <div class="table-responsive" id="compareTableContainer"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: USER AUTH (LOGIN / REGISTER) -->
+  <div class="modal" id="userAuthModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('userAuthModal')">&times;</button>
+      
+      <!-- TAB SWITCHER -->
+      <div class="auth-tabs" style="display:flex; gap:10px; margin-bottom:20px; border-bottom:2px solid var(--border-color); padding-bottom: 10px;">
+        <button id="tabUserLoginBtn" class="btn btn-primary btn-sm" style="flex:1;" onclick="switchUserAuthTab('login')">User Login</button>
+        <button id="tabUserRegisterBtn" class="btn btn-outline btn-sm" style="flex:1;" onclick="switchUserAuthTab('register')">User Register</button>
+      </div>
+
+      <!-- USER LOGIN FORM -->
+      <form id="userLoginForm" onsubmit="handleUserLogin(event)">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-right-to-bracket"></i> User Portal Login</h3>
+          <p>Login to access your personal dashboard and saved stay applications.</p>
+        </div>
+        <div class="form-group">
+          <label>Username or Email</label>
+          <input type="text" id="userLoginName" required placeholder="Enter username" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="userLoginPass" required placeholder="Enter password" class="form-control"/>
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('userLoginPass', this)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:10px;">Login to Portal</button>
+      </form>
+
+      <!-- USER REGISTER FORM -->
+      <form id="userRegisterForm" style="display:none;" onsubmit="handleUserRegister(event)">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-user-plus"></i> Create User Account</h3>
+          <p>Register as a tenant or guest finder in Irosin.</p>
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="regFullName" required placeholder="e.g. Mary Grace Lacsa" class="form-control" oninput="validateInputLetters(this, 'Full Name')"/>
+        </div>
+        <div class="form-group">
+          <label>Contact Number (11 digits)</label>
+          <input type="text" id="regContact" required placeholder="09171234567" maxlength="11" class="form-control" oninput="validateInputDigits(this, 'Contact Number')"/>
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="regUsername" required placeholder="Mary Grace Lacsa" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="regPassword" required placeholder="Create strong password" class="form-control"/>
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPassword', this)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:10px;">Complete Registration</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADMIN LOGIN -->
+  <div class="modal" id="authModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-shield"></i> Admin Portal Login</h3>
+        <p>Use admin credentials to manage platform listings.</p>
+      </div>
+      <form id="authForm" onsubmit="handleAdminLogin(event)">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="adminUser" required placeholder="" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="adminPass" required placeholder="" class="form-control"/>
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('adminPass', this)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cred-box">
+          <strong>Admin Credentials:</strong><br>Username: <code></code> | Password: <code></code>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login to Admin Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADMIN PROPERTY ADD / EDIT FORM -->
+  <div class="modal" id="adminPropertyModal">
+    <div class="modal-content modal-lg">
+      <button class="modal-close" onclick="closeModal('adminPropertyModal')">&times;</button>
+      <div class="modal-header">
+        <h3 id="adminModalTitle"><i class="fa-solid fa-building-circle-arrow-right"></i> Add New Property</h3>
+        <p>Fill out complete property details for Irosin listings.</p>
+      </div>
+      <form id="adminPropertyForm" onsubmit="handleAdminPropertySubmit(event)">
+        <input type="hidden" id="editPropertyId"/>
+        <div class="responsive-form-grid">
+          <div class="form-group">
+            <label>Property Title</label>
+            <input type="text" id="adminTitle" required placeholder="e.g. Sunrise Boarding House" class="form-control"/>
+          </div>
+          <div class="form-group">
+            <label>Barangay (Irosin)</label>
+            <select id="adminBarangay" required class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label>Property Type</label>
+            <select id="adminType" required class="form-control">
+              <option value="Room">Private Room</option>
+              <option value="Apartment">Apartment</option>
+              <option value="Transient">Transient / Lodge</option>
+              <option value="Boarding House">Boarding House</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="adminStatus" required class="form-control">
+              <option value="Available">Available</option>
+              <option value="Occupied">Occupied</option>
+              <option value="Reserved">Reserved</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Price (₱)</label>
+            <input type="text" id="adminPrice" required placeholder="2500" class="form-control" oninput="validateInputDigits(this, 'Price')"/>
+          </div>
+          <div class="form-group">
+            <label>Price Unit</label>
+            <select id="adminPriceUnit" required class="form-control">
+              <option value="month">per month</option>
+              <option value="night">per night</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Contact Number (11 digits)</label>
+            <input type="text" id="adminContact" required placeholder="09171234567" maxlength="11" class="form-control" oninput="validateInputDigits(this, 'Contact Number')"/>
+          </div>
+          <div class="form-group">
+            <label>Image URL</label>
+            <input type="text" id="adminImage" required placeholder="https://images.unsplash.com/..." class="form-control"/>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 15px;">
+          <label>Description</label>
+          <textarea id="adminDescription" rows="3" required placeholder="Describe amenities, near town proper, etc." class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 20px;">Save Property Listing</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
